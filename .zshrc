@@ -126,22 +126,13 @@ alias sudo='sudo'
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias vim='nvim'
 
+# $PATH updates
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
 export PATH=$PATH:$HOME/.maestro/bin
 export PATH=$PATH:$HOME/Projects/wild-at-heart/utils
 export PATH=$PATH:$HOME/.composer/vendor/bin
 eval "$(zoxide init zsh)"
-
-eval "$(zoxide init zsh)"
-
-eval "$(zoxide init zsh)"
-
-eval "$(zoxide init zsh)"
-
-eval "$(zoxide init zsh)"
-
-
 
 # bun completions
 [ -s "/Users/nic/.bun/_bun" ] && source "/Users/nic/.bun/_bun"

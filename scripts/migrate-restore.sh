@@ -32,6 +32,15 @@ echo "==> Installing everything from $DOTFILES/Brewfile"
 # that happens, update the app to match (or delete it) and re-run this script.
 brew bundle install --file="$DOTFILES/Brewfile"
 
+echo "==> Cloning powerlevel10k theme (excluded from git, treated as a regenerable dependency)"
+if [[ ! -d "$DOTFILES/powerlevel10k" ]]; then
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$DOTFILES/powerlevel10k"
+fi
+
+echo "==> Linking ~/.zshrc to $DOTFILES/.zshrc"
+[[ -e "$HOME/.zshrc" && ! -L "$HOME/.zshrc" ]] && mv "$HOME/.zshrc" "$HOME/.zshrc.bak"
+ln -sf "$DOTFILES/.zshrc" "$HOME/.zshrc"
+
 echo "==> Extracting app data from $ARCHIVE"
 tar -xzf "$ARCHIVE" -C "$STAGING"
 

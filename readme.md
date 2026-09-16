@@ -52,6 +52,9 @@ connections, license files, snippets, etc.) via a separate archive that never go
      app's version doesn't match what the cask currently expects, brew will print an error
      for that one cask and skip it. Update (or delete) the app to match, then re-run the
      script to pick it up.
+   - Also clones the `powerlevel10k` theme (excluded from git, treated as a regenerable
+     dependency — same reasoning as `vendor`/`node_modules`) and symlinks `~/.zshrc` to
+     `~/dotfiles/.zshrc`, backing up any pre-existing `~/.zshrc` to `~/.zshrc.bak` first.
 4. Sign into account-synced apps normally (1Password, Dropbox, Slack, Notion, Google Drive,
    Discord, Arc profile sync, Raycast, etc.) — their data comes down automatically and isn't
    part of the archive.

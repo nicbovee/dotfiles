@@ -1,1 +1,4 @@
 *.tar.gz
+.DS_Store
+/powerlevel10k/
+__pycache__/

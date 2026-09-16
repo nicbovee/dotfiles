@@ -1,4 +1,12 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+autoload -Uz compinit
+compinit
+autoload bashcompinit
+bashcompinit
+
+# wp-cli autocompletions
+source ~/dotfiles/scripts/wp-completion.bash
+
+# Eenable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
@@ -9,6 +17,8 @@ fi
  export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 
+ # Volta for managing node versions
+export PATH="$PATH:/Users/nic/.volta/bin"
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -113,8 +123,6 @@ source $ZSH/oh-my-zsh.sh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 alias python=/usr/bin/python3
 
-export NVM_DIR=~/.nvm
-source $(brew --prefix nvm)/nvm.sh
 # pnpm
 export PNPM_HOME="/Users/nic/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
@@ -125,6 +133,13 @@ alias pip='pip3'
 alias sudo='sudo'
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias vim='nvim'
+alias sail='./vendor/bin/sail'
+alias dwp='docker exec -u www-data -it -w /www/kinsta/public/pikespeakrock/site devkinsta_fpm php8.2 /usr/local/bin/wp'
+alias gtin='python3 ~/dotfiles/scripts/gtin/gtin.py'
+
+# Zoxide as cd
+alias cd='z'
+alias cdi='zi'
 
 # $PATH updates
 export VOLTA_HOME="$HOME/.volta"
@@ -132,6 +147,15 @@ export PATH="$VOLTA_HOME/bin:$PATH"
 export PATH=$PATH:$HOME/.maestro/bin
 export PATH=$PATH:$HOME/Projects/wild-at-heart/utils
 export PATH=$PATH:$HOME/.composer/vendor/bin
+export PATH=$PATH:$HOME/Library/Application\ Support/Coursier/bin
+
+# Text editor defualts
+export EDITOR="nvim"
+export VISUAL="nvim"
+
+alias vim="nvim"
+alias vi="nvim"
+
 eval "$(zoxide init zsh)"
 
 # bun completions
@@ -140,3 +164,66 @@ eval "$(zoxide init zsh)"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# >>> juliaup initialize >>>
+
+# !! Contents within this block are managed by juliaup !!
+
+path=('/Applications/Julia-1.10.app/Contents/Resources/julia/bin' $path)
+export PATH
+
+# <<< juliaup initialize <<<
+
+
+# make it easier to flushdns
+alias flushdns="sudo killall -HUP mDNSResponder"
+export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
+
+export TERM=xterm-256color
+
+source ~/dotfiles/powerlevel10k/powerlevel10k.zsh-theme
+
+bindkey -e
+# Most common xterm-style Alt+Arrows:
+bindkey "^[\[1;3D" backward-word
+bindkey "^[\[1;3C" forward-word
+# Alternates some terms use:
+bindkey "^[\[3;3D" backward-word
+bindkey "^[\[3;3C" forward-word
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/nic/Projects/wildatheart/pause-proxy/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/nic/Projects/wildatheart/pause-proxy/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/nic/Projects/wildatheart/pause-proxy/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/nic/Projects/wildatheart/pause-proxy/google-cloud-sdk/completion.zsh.inc'; fi
+
+
+# JDK 17 (required by pause-mobile / React Native Android builds)
+export JAVA_HOME="$(brew --prefix openjdk@17)/libexec/openjdk.jdk/Contents/Home"
+export PATH="$JAVA_HOME/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/nic/.lmstudio/bin"
+# End of LM Studio CLI section
+
+
+
+# Herd injected PHP binary.
+export PATH="/Users/nic/Library/Application Support/Herd/bin/":$PATH
+
+
+# Herd injected PHP 8.2 configuration.
+export HERD_PHP_82_INI_SCAN_DIR="/Users/nic/Library/Application Support/Herd/config/php/82/"
+
+
+# Herd injected PHP 8.4 configuration.
+export HERD_PHP_84_INI_SCAN_DIR="/Users/nic/Library/Application Support/Herd/config/php/84/"
+
+
+# Herd injected PHP 8.5 configuration.
+export HERD_PHP_85_INI_SCAN_DIR="/Users/nic/Library/Application Support/Herd/config/php/85/"
+
+
+# Herd injected PHP 8.3 configuration.
+export HERD_PHP_83_INI_SCAN_DIR="/Users/nic/Library/Application Support/Herd/config/php/83/"

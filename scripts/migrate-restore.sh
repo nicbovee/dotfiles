@@ -45,8 +45,21 @@ else
 fi
 
 echo "==> Linking ~/.zshrc to $DOTFILES/.zshrc"
-[[ -e "$HOME/.zshrc" && ! -L "$HOME/.zshrc" ]] && mv "$HOME/.zshrc" "$HOME/.zshrc.bak"
+# Written as an `if` rather than `[[ ... ]] && mv`: under `set -e` that one-liner
+# aborts the whole script when the test is false (i.e. on a clean Mac with no ~/.zshrc).
+if [[ -e "$HOME/.zshrc" && ! -L "$HOME/.zshrc" ]]; then
+    mv "$HOME/.zshrc" "$HOME/.zshrc.bak"
+fi
 ln -sf "$DOTFILES/.zshrc" "$HOME/.zshrc"
+
+echo "==> Linking ~/.config/nvim to $DOTFILES/nvim"
+mkdir -p "$HOME/.config"
+if [[ -e "$HOME/.config/nvim" && ! -L "$HOME/.config/nvim" ]]; then
+    mv "$HOME/.config/nvim" "$HOME/.config/nvim.bak"
+fi
+# ln -sfn (not -sf): without -n, if ~/.config/nvim is already a symlink to the repo,
+# ln follows it and creates ~/.config/nvim/nvim instead of replacing the link.
+ln -sfn "$DOTFILES/nvim" "$HOME/.config/nvim"
 
 echo "==> Extracting app data from $ARCHIVE"
 tar -xzf "$ARCHIVE" -C "$STAGING"

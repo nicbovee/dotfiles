@@ -44,8 +44,14 @@ connections, license files, snippets, etc.) via a separate archive that never go
    ```
    This installs Xcode Command Line Tools and Homebrew if missing, runs
    `brew bundle install --file=Brewfile`, then unpacks the archive back into each app's folder.
-   Some casks (e.g. those that run a `.pkg` installer with `sudo`) will prompt for your
-   password interactively during `brew bundle install` — just enter it when asked.
+   - Some casks (e.g. those that run a `.pkg` installer with `sudo`) will prompt for your
+     password interactively during `brew bundle install` — just enter it when asked.
+   - If an app is already present on the new Mac (pre-installed, downloaded manually before
+     running this script, etc.), `brew bundle install` automatically adopts it into Homebrew
+     management instead of failing — no extra flag needed. The only exception: if that
+     app's version doesn't match what the cask currently expects, brew will print an error
+     for that one cask and skip it. Update (or delete) the app to match, then re-run the
+     script to pick it up.
 4. Sign into account-synced apps normally (1Password, Dropbox, Slack, Notion, Google Drive,
    Discord, Arc profile sync, Raycast, etc.) — their data comes down automatically and isn't
    part of the archive.

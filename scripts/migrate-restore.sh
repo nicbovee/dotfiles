@@ -25,6 +25,11 @@ if ! command -v brew &>/dev/null; then
 fi
 
 echo "==> Installing everything from $DOTFILES/Brewfile"
+# brew bundle install already passes --adopt for every cask by default, so if an app
+# is already present (pre-installed, downloaded manually, etc.) it gets taken over by
+# Homebrew instead of failing - unless its version doesn't match the cask's current
+# version, in which case brew will print an error for that one cask and skip it. If
+# that happens, update the app to match (or delete it) and re-run this script.
 brew bundle install --file="$DOTFILES/Brewfile"
 
 echo "==> Extracting app data from $ARCHIVE"

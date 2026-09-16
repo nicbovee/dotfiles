@@ -1,123 +1,140 @@
-tap "facebook/fb"
-tap "hashicorp/tap"
-tap "homebrew/bundle"
-tap "homebrew/services"
+tap "laravel/moat", "https://github.com/laravel/moat"
 tap "roots/tap"
-tap "wix/brew"
-brew "python@3.11"
-brew "ansible"
-brew "apr-util"
-brew "asimov"
-brew "libssh2"
-brew "curl"
-brew "dnsmasq"
-brew "doctl"
-brew "openssl@3", link: false
+# B2 Cloud Storage Command-Line Tools
+brew "b2-tools"
+# Cross-platform make
+brew "cmake"
+# Dependency manager for Cocoa projects
+brew "cocoapods"
+# Easiest way to build and release mobile apps
 brew "fastlane"
-brew "openjpeg"
-brew "leptonica"
-brew "tesseract"
-brew "ffmpeg"
-brew "freetds"
-brew "fzf"
+# GitHub command-line tool
 brew "gh"
-brew "git"
-brew "jq"
-brew "krb5"
-brew "mariadb"
-brew "tree-sitter"
+# Website copier/offline browser
+brew "httrack"
+# Simple terminal UI for git commands
+brew "lazygit"
+# Linux virtual machines
+brew "lima"
+# Mac App Store command-line interface
+brew "mas"
+# Deep clean and optimize your Mac
+brew "mole"
+# Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
-brew "nginx"
-brew "nvm"
-brew "php", link: false
-brew "php@8.1", link: true
-brew "pnpm"
-brew "ruby"
+# Development kit for the Java programming language
+brew "openjdk"
+# Development kit for the Java programming language
+brew "openjdk@17"
+# Generic machine emulator and virtualizer
+brew "qemu"
+# Terminal multiplexer
 brew "tmux"
+# Manage complex tmux sessions easily
+brew "tmuxinator"
+# Internet file retriever
+brew "wget"
+# Feature-rich command-line audio/video downloader
+brew "yt-dlp"
+# Shell extension to navigate your filesystem faster
 brew "zoxide"
-brew "facebook/fb/idb-companion"
-brew "roots/tap/trellis-cli"
-brew "wix/brew/applesimutils"
-cask "hashicorp-vagrant"
-cask "react-native-debugger"
-vscode "aeschli.vscode-css-formatter"
-vscode "ardenivanov.svelte-intellisense"
+# Password manager that keeps all passwords secure behind one password
+cask "1password"
+# Chromium based browser
+cask "arc"
+# Data backup and storage service
+cask "backblaze"
+# Open source IDE for exploring and testing APIs
+cask "bruno"
+# OpenAI's official ChatGPT desktop app
+cask "chatgpt"
+# Anthropic's official Claude AI desktop app
+cask "claude"
+# Web browser with integrated AI assistant
+cask "comet"
+# Write, edit, and chat about your code with AI
+cask "cursor"
+# Disk space visualiser
+cask "daisydisk"
+# Voice and text chat software
+cask "discord"
+# Client for the Dropbox cloud storage service
+cask "dropbox"
+# Launch builds and start simulators from your menu bar
+cask "expo-orbit"
+# Offline voice-to-text dictation app with AI enhancement
+cask "fluidvoice"
+# Download manager with a torrent client
+cask "folx"
+# Terminal emulator that uses platform-native UI and GPU acceleration
+cask "ghostty"
+# Web browser
+cask "google-chrome"
+# AI teammates that work across your apps and tools
+cask "grok-bot"
+# Laravel and PHP development environment manager
+cask "herd"
+# Discover, download, and run local LLMs
+cask "lm-studio"
+# WordPress local development tool by Flywheel
+cask "local"
+# Screen and video recording software
+cask "loom"
+# App to write, plan, collaborate, and get organised
+cask "notion"
+# Calendar for professionals and teams
+cask "notion-calendar"
+# Open-source software for live streaming and screen recording
+cask "obs"
+# Knowledge base that works on top of a local folder of plain text Markdown files
+cask "obsidian"
+# Bundle with over 30 tools
+cask "parallels-toolbox"
+# Control your tools with a few keystrokes
+cask "raycast"
+# Team communication and collaboration software
+cask "slack"
+# Video game digital distribution service
+cask "steam"
+# Native GUI tool for relational databases
+cask "tableplus"
+# Tinker tool for PHP and Laravel developers
+cask "tinkerwell"
+# Git client focusing on power and productivity
+cask "tower"
+# File transfer application
+cask "transmit"
+# Multimedia player
+cask "vlc"
+# Rust-based terminal
+cask "warp"
+# Multiplayer code editor
+cask "zed"
+mas "Amphetamine", id: 937984704
+mas "Apple Configurator", id: 1037126344
+mas "Enpass", id: 732710998
+mas "GarageBand", id: 682658836
+mas "GoPro Webcam", id: 6477835262
+mas "iMovie", id: 408981434
+mas "Infuse", id: 1136220934
+mas "Keynote", id: 409183694
+mas "Magnet", id: 441258766
+mas "Microsoft Excel", id: 462058435
+mas "NIIMBOT 2", id: 6755411172
+mas "Numbers", id: 409203825
+mas "Pages", id: 409201541
+mas "Pandan", id: 1569600264
+mas "RunCat", id: 1429033973
+mas "SiteSucker", id: 442168834
+mas "Things", id: 904280696
+mas "Xcode", id: 497799835
+vscode "anysphere.remote-containers"
+vscode "anysphere.remote-ssh"
 vscode "astro-build.astro-vscode"
-vscode "bierner.lit-html"
 vscode "bmewburn.vscode-intelephense-client"
-vscode "bradlc.vscode-tailwindcss"
-vscode "dbaeumer.vscode-eslint"
-vscode "deerawan.vscode-dash"
-vscode "DotJoshJohnson.xml"
-vscode "dsznajder.es7-react-js-snippets"
-vscode "eamodio.gitlens"
-vscode "eriklynd.json-tools"
-vscode "esbenp.prettier-vscode"
-vscode "formulahendry.auto-rename-tag"
-vscode "GitHub.codespaces"
-vscode "GitHub.copilot"
-vscode "GitHub.copilot-chat"
-vscode "GrapeCity.gc-excelviewer"
-vscode "GraphQL.vscode-graphql"
-vscode "GraphQL.vscode-graphql-syntax"
-vscode "jakebathman.mysql-syntax"
-vscode "JSONHero.jsonhero-vscode"
-vscode "jundat95.react-native-snippet"
-vscode "marcostazi.VS-code-drupal"
-vscode "mathiasfrohlich.Kotlin"
-vscode "ms-azuretools.vscode-docker"
-vscode "ms-dotnettools.csharp"
-vscode "ms-dotnettools.vscode-dotnet-runtime"
-vscode "ms-mssql.data-workspace-vscode"
-vscode "ms-mssql.mssql"
-vscode "ms-mssql.sql-bindings-vscode"
-vscode "ms-mssql.sql-database-projects-vscode"
-vscode "ms-python.isort"
-vscode "ms-python.python"
-vscode "ms-python.vscode-pylance"
-vscode "ms-toolsai.jupyter"
-vscode "ms-toolsai.jupyter-keymap"
-vscode "ms-toolsai.jupyter-renderers"
-vscode "ms-toolsai.vscode-jupyter-cell-tags"
-vscode "ms-toolsai.vscode-jupyter-slideshow"
-vscode "ms-vscode-remote.remote-containers"
-vscode "ms-vscode.cpptools"
-vscode "msjsdiag.vscode-react-native"
-vscode "mtxr.sqltools"
-vscode "onecentlin.laravel-blade"
-vscode "quicktype.quicktype"
-vscode "redhat.java"
-vscode "redhat.vscode-xml"
-vscode "ruakr.ftp-kr"
-vscode "rust-lang.rust-analyzer"
-vscode "shufo.vscode-blade-formatter"
-vscode "sibiraj-s.vscode-scss-formatter"
-vscode "sperovita.alpinejs-syntax-highlight"
-vscode "statiolake.vscode-rustfmt"
-vscode "streetsidesoftware.code-spell-checker"
-vscode "sudoaugustin.tailwindcss-transpiler"
 vscode "svelte.svelte-vscode"
-vscode "tamasfe.even-better-toml"
-vscode "this-fifo.natty"
-vscode "tungvn.wordpress-snippet"
-vscode "uctakeoff.vscode-counter"
-vscode "VisualStudioExptTeam.intellicode-api-usage-examples"
-vscode "VisualStudioExptTeam.vscodeintellicode"
-vscode "vscjava.vscode-java-debug"
-vscode "vscjava.vscode-java-dependency"
-vscode "vscjava.vscode-java-pack"
-vscode "vscjava.vscode-java-test"
-vscode "vscjava.vscode-maven"
-vscode "vscode-icons-team.vscode-icons"
 vscode "vscodevim.vim"
-vscode "vtfn.stylint"
-vscode "wesbos.theme-cobalt2"
-vscode "whatwedo.twig"
-vscode "xabikos.ReactSnippets"
+vscode "waderyan.gitblame"
 vscode "xdebug.php-debug"
-vscode "xdebug.php-pack"
-vscode "yoavbls.pretty-ts-errors"
-vscode "yzhang.markdown-all-in-one"
-vscode "ZixuanChen.vitest-explorer"
-vscode "znck.grammarly"
-vscode "zobo.php-intellisense"
+cargo "tauri-cli"
+npm "corepack"

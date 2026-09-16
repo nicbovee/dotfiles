@@ -18,7 +18,7 @@ fi
 
 
  # Volta for managing node versions
-export PATH="$PATH:/Users/nic/.volta/bin"
+export PATH="$PATH:~/.volta/bin"
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"

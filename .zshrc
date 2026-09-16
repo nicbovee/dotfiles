@@ -4,7 +4,7 @@ autoload bashcompinit
 bashcompinit
 
 # wp-cli autocompletions
-source ~/dotfiles/scripts/wp-completion.bash
+source ~/dotfiles/utils/wp-completion.bash
 
 # Eenable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -135,7 +135,7 @@ alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias vim='nvim'
 alias sail='./vendor/bin/sail'
 alias dwp='docker exec -u www-data -it -w /www/kinsta/public/pikespeakrock/site devkinsta_fpm php8.2 /usr/local/bin/wp'
-alias gtin='python3 ~/dotfiles/scripts/gtin/gtin.py'
+alias gtin='python3 ~/dotfiles/utils/gtin/gtin.py'
 
 # Zoxide as cd
 alias cd='z'

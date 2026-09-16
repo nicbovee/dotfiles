@@ -29,12 +29,19 @@ echo "==> Installing everything from $DOTFILES/Brewfile"
 # is already present (pre-installed, downloaded manually, etc.) it gets taken over by
 # Homebrew instead of failing - unless its version doesn't match the cask's current
 # version, in which case brew will print an error for that one cask and skip it. If
-# that happens, update the app to match (or delete it) and re-run this script.
-brew bundle install --file="$DOTFILES/Brewfile"
+# that happens, update the app to match (or delete it) and re-run this script. Kept
+# non-fatal so one bad cask can't abort the whole restore under `set -e`.
+brew bundle install --file="$DOTFILES/Brewfile" \
+    || echo "  ! some Brewfile entries failed - see above; fix them and re-run this script"
 
 echo "==> Cloning powerlevel10k theme (excluded from git, treated as a regenerable dependency)"
-if [[ ! -d "$DOTFILES/powerlevel10k" ]]; then
+# Test for the theme file itself, not the directory: a stale or empty powerlevel10k/
+# directory would otherwise look like a successful install and silently skip the clone.
+if [[ ! -f "$DOTFILES/powerlevel10k/powerlevel10k.zsh-theme" ]]; then
+    rm -rf "$DOTFILES/powerlevel10k"
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$DOTFILES/powerlevel10k"
+else
+    echo "  + already installed"
 fi
 
 echo "==> Linking ~/.zshrc to $DOTFILES/.zshrc"

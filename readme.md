@@ -33,6 +33,7 @@ connections, license files, snippets, etc.) via a separate archive that never go
    - Herd site/PHP config
    - Cura print profiles
    - Blender preferences
+   - Claude Code per-project memory, `settings.json` and hooks (not transcripts or caches)
 3. Commit and push the regenerated `Brewfile` if it changed:
    ```
    git add Brewfile && git commit -m "Update Brewfile" && git push

@@ -70,6 +70,17 @@ if [[ -d "$HOME/Library/Application Support/Blender" ]]; then
     echo "  + blender/*"
 fi
 
+# Claude Code: per-project memory, settings and hooks. Transcripts, caches and synced
+# skills are left out - they're large, regenerable, or come back on sign-in.
+add "$HOME/.claude/settings.json" "claude/settings.json"
+add "$HOME/.claude/hooks" "claude/hooks"
+if [[ -d "$HOME/.claude/projects" ]]; then
+    for mem in "$HOME/.claude/projects"/*/memory; do
+        [[ -n "$(ls -A "$mem" 2>/dev/null)" ]] || continue
+        add "$mem" "claude/projects/$(basename "$(dirname "$mem")")/memory"
+    done
+fi
+
 echo "==> Creating archive: $ARCHIVE"
 tar -czf "$ARCHIVE" -C "$STAGING" .
 rm -rf "$STAGING"

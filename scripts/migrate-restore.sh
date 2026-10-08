@@ -132,6 +132,20 @@ if [[ -d "$STAGING/blender" ]]; then
     echo "  + restored blender/*"
 fi
 
+restore "claude/settings.json" "$HOME/.claude/settings.json"
+if [[ -d "$STAGING/claude/hooks" ]]; then
+    mkdir -p "$HOME/.claude/hooks"
+    rsync -a "$STAGING/claude/hooks/" "$HOME/.claude/hooks/"
+    echo "  + restored claude/hooks"
+fi
+# Memory folders are keyed by project path (e.g. -Users-nic-Projects-foo), so they only
+# get picked up if the projects live at the same paths on this Mac.
+if [[ -d "$STAGING/claude/projects" ]]; then
+    mkdir -p "$HOME/.claude/projects"
+    rsync -a "$STAGING/claude/projects/" "$HOME/.claude/projects/"
+    echo "  + restored claude/projects/*/memory"
+fi
+
 rm -rf "$STAGING"
 
 echo

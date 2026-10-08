@@ -54,6 +54,8 @@ cask "bruno"
 cask "chatgpt"
 # Anthropic's official Claude AI desktop app
 cask "claude"
+# Terminal-based AI coding assistant
+cask "claude-code"
 # Web browser with integrated AI assistant
 cask "comet"
 # Write, edit, and chat about your code with AI
@@ -125,12 +127,9 @@ mas "GarageBand", id: 682658836
 mas "GoPro Webcam", id: 6477835262
 mas "iMovie", id: 408981434
 mas "Infuse", id: 1136220934
-mas "Keynote", id: 409183694
 mas "Magnet", id: 441258766
 mas "Microsoft Excel", id: 462058435
 mas "NIIMBOT 2", id: 6755411172
-mas "Numbers", id: 409203825
-mas "Pages", id: 409201541
 mas "Pandan", id: 1569600264
 mas "RunCat", id: 1429033973
 mas "SiteSucker", id: 442168834

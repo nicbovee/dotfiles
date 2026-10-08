@@ -44,6 +44,22 @@ else
     echo "  + already installed"
 fi
 
+echo "==> Installing Oh My Zsh (sourced by .zshrc)"
+if [[ ! -f "$HOME/.oh-my-zsh/oh-my-zsh.sh" ]]; then
+    # --keep-zshrc: otherwise the installer moves ~/.zshrc aside and writes its own template.
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
+else
+    echo "  + already installed"
+fi
+
+# .zshrc sets ZSH_THEME="powerlevel10k/powerlevel10k", which Oh My Zsh resolves under
+# custom/themes - point it at the copy cloned above rather than cloning a second one.
+P10K_THEME_LINK="$HOME/.oh-my-zsh/custom/themes/powerlevel10k"
+if [[ ! -e "$P10K_THEME_LINK" ]]; then
+    mkdir -p "$(dirname "$P10K_THEME_LINK")"
+    ln -s "$DOTFILES/powerlevel10k" "$P10K_THEME_LINK"
+fi
+
 echo "==> Linking ~/.zshrc to $DOTFILES/.zshrc"
 # Written as an `if` rather than `[[ ... ]] && mv`: under `set -e` that one-liner
 # aborts the whole script when the test is false (i.e. on a clean Mac with no ~/.zshrc).
@@ -51,6 +67,12 @@ if [[ -e "$HOME/.zshrc" && ! -L "$HOME/.zshrc" ]]; then
     mv "$HOME/.zshrc" "$HOME/.zshrc.bak"
 fi
 ln -sf "$DOTFILES/.zshrc" "$HOME/.zshrc"
+
+echo "==> Linking ~/.p10k.zsh to $DOTFILES/.p10k.zsh"
+if [[ -e "$HOME/.p10k.zsh" && ! -L "$HOME/.p10k.zsh" ]]; then
+    mv "$HOME/.p10k.zsh" "$HOME/.p10k.zsh.bak"
+fi
+ln -sf "$DOTFILES/.p10k.zsh" "$HOME/.p10k.zsh"
 
 echo "==> Linking ~/.config/nvim to $DOTFILES/nvim"
 mkdir -p "$HOME/.config"

@@ -10,6 +10,8 @@ brew "cocoapods"
 brew "fastlane"
 # GitHub command-line tool
 brew "gh"
+# Agent multiplexer that lives in your terminal
+brew "herdr"
 # Website copier/offline browser
 brew "httrack"
 # Simple terminal UI for git commands
@@ -22,6 +24,8 @@ brew "mas"
 brew "mole"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
+# AI coding agent, built for the terminal
+brew "opencode"
 # Development kit for the Java programming language
 brew "openjdk"
 # Development kit for the Java programming language
@@ -86,6 +90,8 @@ cask "notion"
 cask "notion-calendar"
 # Open-source software for live streaming and screen recording
 cask "obs"
+# Get up and running with large language models locally
+cask "ollama-app"
 # Knowledge base that works on top of a local folder of plain text Markdown files
 cask "obsidian"
 # Bundle with over 30 tools
@@ -100,6 +106,8 @@ cask "steam"
 cask "tableplus"
 # Tinker tool for PHP and Laravel developers
 cask "tinkerwell"
+# Automatic time and productivity tracking app
+cask "timing"
 # Git client focusing on power and productivity
 cask "tower"
 # File transfer application

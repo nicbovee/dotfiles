@@ -61,9 +61,10 @@ connections, license files, snippets, etc.) via a separate archive that never go
      for that one cask and skip it. Update (or delete) the app to match, then re-run the
      script to pick it up.
    - Also clones the `powerlevel10k` theme (excluded from git, treated as a regenerable
-     dependency — same reasoning as `vendor`/`node_modules`) and symlinks `~/.zshrc` to
-     `~/dotfiles/.zshrc` and `~/.config/nvim` to `~/dotfiles/nvim`, backing up any
-     pre-existing copies to `~/.zshrc.bak` / `~/.config/nvim.bak` first.
+     dependency — same reasoning as `vendor`/`node_modules`), installs Oh My Zsh (with
+     `--keep-zshrc` so it doesn't replace ours) and links the theme into its
+     `custom/themes`, and symlinks `~/.zshrc`, `~/.p10k.zsh` and `~/.config/nvim` to their
+     copies in `~/dotfiles`, backing up any pre-existing files to `*.bak` first.
 4. Sign into account-synced apps normally (1Password, Dropbox, Slack, Notion, Google Drive,
    Discord, Arc profile sync, Raycast, etc.) — their data comes down automatically and isn't
    part of the archive.

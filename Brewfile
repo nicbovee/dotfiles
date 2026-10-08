@@ -104,6 +104,8 @@ cask "raycast"
 cask "slack"
 # Video game digital distribution service
 cask "steam"
+# Email client
+cask "superhuman"
 # Native GUI tool for relational databases
 cask "tableplus"
 # Tinker tool for PHP and Laravel developers

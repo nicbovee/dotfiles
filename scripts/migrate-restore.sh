@@ -3,85 +3,94 @@
 # Run on the NEW Mac after: (1) cloning ~/dotfiles, (2) copying the
 # mac-migration-<date>.tar.gz archive onto this machine.
 #
-# Usage: ./migrate-restore.sh /path/to/mac-migration-<date>.tar.gz
+# Usage: ./migrate-restore.sh [--claude-only] /path/to/<archive>.tar.gz
+#   --claude-only   Skip Homebrew, the Brewfile and shell setup; just restore what's in
+#                   the archive (e.g. one made with migrate-backup.sh --claude-only).
 #
 set -euo pipefail
 
-ARCHIVE="${1:?Usage: migrate-restore.sh /path/to/mac-migration-<date>.tar.gz}"
+CLAUDE_ONLY=false
+if [[ "${1:-}" == "--claude-only" ]]; then
+    CLAUDE_ONLY=true
+    shift
+fi
+ARCHIVE="${1:?Usage: migrate-restore.sh [--claude-only] /path/to/<archive>.tar.gz}"
 DOTFILES="$HOME/dotfiles"
 STAGING="$(mktemp -d)"
 
-if ! xcode-select -p &>/dev/null; then
-    echo "==> Installing Xcode Command Line Tools (required by Homebrew)"
-    xcode-select --install
-    echo "Re-run this script after the Command Line Tools install finishes."
-    exit 1
-fi
+if ! $CLAUDE_ONLY; then
+    if ! xcode-select -p &>/dev/null; then
+        echo "==> Installing Xcode Command Line Tools (required by Homebrew)"
+        xcode-select --install
+        echo "Re-run this script after the Command Line Tools install finishes."
+        exit 1
+    fi
 
-if ! command -v brew &>/dev/null; then
-    echo "==> Installing Homebrew"
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-fi
+    if ! command -v brew &>/dev/null; then
+        echo "==> Installing Homebrew"
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
 
-echo "==> Installing everything from $DOTFILES/Brewfile"
-# brew bundle install already passes --adopt for every cask by default, so if an app
-# is already present (pre-installed, downloaded manually, etc.) it gets taken over by
-# Homebrew instead of failing - unless its version doesn't match the cask's current
-# version, in which case brew will print an error for that one cask and skip it. If
-# that happens, update the app to match (or delete it) and re-run this script. Kept
-# non-fatal so one bad cask can't abort the whole restore under `set -e`.
-brew bundle install --file="$DOTFILES/Brewfile" \
-    || echo "  ! some Brewfile entries failed - see above; fix them and re-run this script"
+    echo "==> Installing everything from $DOTFILES/Brewfile"
+    # brew bundle install already passes --adopt for every cask by default, so if an app
+    # is already present (pre-installed, downloaded manually, etc.) it gets taken over by
+    # Homebrew instead of failing - unless its version doesn't match the cask's current
+    # version, in which case brew will print an error for that one cask and skip it. If
+    # that happens, update the app to match (or delete it) and re-run this script. Kept
+    # non-fatal so one bad cask can't abort the whole restore under `set -e`.
+    brew bundle install --file="$DOTFILES/Brewfile" \
+        || echo "  ! some Brewfile entries failed - see above; fix them and re-run this script"
 
-echo "==> Cloning powerlevel10k theme (excluded from git, treated as a regenerable dependency)"
-# Test for the theme file itself, not the directory: a stale or empty powerlevel10k/
-# directory would otherwise look like a successful install and silently skip the clone.
-if [[ ! -f "$DOTFILES/powerlevel10k/powerlevel10k.zsh-theme" ]]; then
-    rm -rf "$DOTFILES/powerlevel10k"
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$DOTFILES/powerlevel10k"
-else
-    echo "  + already installed"
-fi
+    echo "==> Cloning powerlevel10k theme (excluded from git, treated as a regenerable dependency)"
+    # Test for the theme file itself, not the directory: a stale or empty powerlevel10k/
+    # directory would otherwise look like a successful install and silently skip the clone.
+    if [[ ! -f "$DOTFILES/powerlevel10k/powerlevel10k.zsh-theme" ]]; then
+        rm -rf "$DOTFILES/powerlevel10k"
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$DOTFILES/powerlevel10k"
+    else
+        echo "  + already installed"
+    fi
 
-echo "==> Installing Oh My Zsh (sourced by .zshrc)"
-if [[ ! -f "$HOME/.oh-my-zsh/oh-my-zsh.sh" ]]; then
-    # --keep-zshrc: otherwise the installer moves ~/.zshrc aside and writes its own template.
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
-else
-    echo "  + already installed"
-fi
+    echo "==> Installing Oh My Zsh (sourced by .zshrc)"
+    if [[ ! -f "$HOME/.oh-my-zsh/oh-my-zsh.sh" ]]; then
+        # --keep-zshrc: otherwise the installer moves ~/.zshrc aside and writes its own template.
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
+    else
+        echo "  + already installed"
+    fi
 
-# .zshrc sets ZSH_THEME="powerlevel10k/powerlevel10k", which Oh My Zsh resolves under
-# custom/themes - point it at the copy cloned above rather than cloning a second one.
-P10K_THEME_LINK="$HOME/.oh-my-zsh/custom/themes/powerlevel10k"
-if [[ ! -e "$P10K_THEME_LINK" ]]; then
-    mkdir -p "$(dirname "$P10K_THEME_LINK")"
-    ln -s "$DOTFILES/powerlevel10k" "$P10K_THEME_LINK"
-fi
+    # .zshrc sets ZSH_THEME="powerlevel10k/powerlevel10k", which Oh My Zsh resolves under
+    # custom/themes - point it at the copy cloned above rather than cloning a second one.
+    P10K_THEME_LINK="$HOME/.oh-my-zsh/custom/themes/powerlevel10k"
+    if [[ ! -e "$P10K_THEME_LINK" ]]; then
+        mkdir -p "$(dirname "$P10K_THEME_LINK")"
+        ln -s "$DOTFILES/powerlevel10k" "$P10K_THEME_LINK"
+    fi
 
-echo "==> Linking ~/.zshrc to $DOTFILES/.zshrc"
-# Written as an `if` rather than `[[ ... ]] && mv`: under `set -e` that one-liner
-# aborts the whole script when the test is false (i.e. on a clean Mac with no ~/.zshrc).
-if [[ -e "$HOME/.zshrc" && ! -L "$HOME/.zshrc" ]]; then
-    mv "$HOME/.zshrc" "$HOME/.zshrc.bak"
-fi
-ln -sf "$DOTFILES/.zshrc" "$HOME/.zshrc"
+    echo "==> Linking ~/.zshrc to $DOTFILES/.zshrc"
+    # Written as an `if` rather than `[[ ... ]] && mv`: under `set -e` that one-liner
+    # aborts the whole script when the test is false (i.e. on a clean Mac with no ~/.zshrc).
+    if [[ -e "$HOME/.zshrc" && ! -L "$HOME/.zshrc" ]]; then
+        mv "$HOME/.zshrc" "$HOME/.zshrc.bak"
+    fi
+    ln -sf "$DOTFILES/.zshrc" "$HOME/.zshrc"
 
-echo "==> Linking ~/.p10k.zsh to $DOTFILES/.p10k.zsh"
-if [[ -e "$HOME/.p10k.zsh" && ! -L "$HOME/.p10k.zsh" ]]; then
-    mv "$HOME/.p10k.zsh" "$HOME/.p10k.zsh.bak"
-fi
-ln -sf "$DOTFILES/.p10k.zsh" "$HOME/.p10k.zsh"
+    echo "==> Linking ~/.p10k.zsh to $DOTFILES/.p10k.zsh"
+    if [[ -e "$HOME/.p10k.zsh" && ! -L "$HOME/.p10k.zsh" ]]; then
+        mv "$HOME/.p10k.zsh" "$HOME/.p10k.zsh.bak"
+    fi
+    ln -sf "$DOTFILES/.p10k.zsh" "$HOME/.p10k.zsh"
 
-echo "==> Linking ~/.config/nvim to $DOTFILES/nvim"
-mkdir -p "$HOME/.config"
-if [[ -e "$HOME/.config/nvim" && ! -L "$HOME/.config/nvim" ]]; then
-    mv "$HOME/.config/nvim" "$HOME/.config/nvim.bak"
+    echo "==> Linking ~/.config/nvim to $DOTFILES/nvim"
+    mkdir -p "$HOME/.config"
+    if [[ -e "$HOME/.config/nvim" && ! -L "$HOME/.config/nvim" ]]; then
+        mv "$HOME/.config/nvim" "$HOME/.config/nvim.bak"
+    fi
+    # ln -sfn (not -sf): without -n, if ~/.config/nvim is already a symlink to the repo,
+    # ln follows it and creates ~/.config/nvim/nvim instead of replacing the link.
+    ln -sfn "$DOTFILES/nvim" "$HOME/.config/nvim"
 fi
-# ln -sfn (not -sf): without -n, if ~/.config/nvim is already a symlink to the repo,
-# ln follows it and creates ~/.config/nvim/nvim instead of replacing the link.
-ln -sfn "$DOTFILES/nvim" "$HOME/.config/nvim"
 
 echo "==> Extracting app data from $ARCHIVE"
 tar -xzf "$ARCHIVE" -C "$STAGING"

@@ -43,6 +43,16 @@ connections, license files, snippets, etc.) via a separate archive that never go
 5. Note any paid-app license keys that live outside app-support folders (check email/purchase
    records) as a fallback.
 
+### Claude Code memory only
+
+To move just Claude Code's per-project memory, `settings.json` and hooks (without touching
+the Brewfile or installing anything):
+
+```
+./scripts/migrate-backup.sh --claude-only          # old Mac -> ~/Desktop/claude-migration-<date>.tar.gz
+./scripts/migrate-restore.sh --claude-only <archive>  # new Mac
+```
+
 ### On the new Mac
 
 1. Clone this repo to `~/dotfiles`.

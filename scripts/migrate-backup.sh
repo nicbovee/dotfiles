@@ -5,21 +5,24 @@
 #   ~/Desktop/mac-migration-<date>.tar.gz      - local-only app data (DO NOT commit/push,
 #                                                 it can contain saved DB connections/licenses)
 #
+# Usage: ./migrate-backup.sh [--claude-only]
+#   --claude-only   Only archive Claude Code memory/settings/hooks to
+#                   ~/Desktop/claude-migration-<date>.tar.gz. Skips the Brewfile dump
+#                   and other app data, so the Brewfile is left untouched.
+#
 set -euo pipefail
+
+CLAUDE_ONLY=false
+[[ "${1:-}" == "--claude-only" ]] && CLAUDE_ONLY=true
 
 DOTFILES="$HOME/dotfiles"
 STAMP="$(date +%Y%m%d)"
-ARCHIVE="$HOME/Desktop/mac-migration-${STAMP}.tar.gz"
+if $CLAUDE_ONLY; then
+    ARCHIVE="$HOME/Desktop/claude-migration-${STAMP}.tar.gz"
+else
+    ARCHIVE="$HOME/Desktop/mac-migration-${STAMP}.tar.gz"
+fi
 STAGING="$(mktemp -d)"
-
-echo "==> Installing mas (Mac App Store CLI) so App Store apps are captured too"
-brew list mas &>/dev/null || brew install mas
-
-echo "==> Dumping Brewfile (formulae, casks, taps, mas apps) to $DOTFILES/Brewfile"
-mkdir -p "$DOTFILES"
-brew bundle dump --force --file="$DOTFILES/Brewfile"
-
-echo "==> Staging local-only app data"
 
 # Each entry: "source path" "relative destination inside archive"
 add() {
@@ -31,45 +34,57 @@ add() {
     fi
 }
 
-add "$HOME/.config/karabiner/karabiner.json" "karabiner/karabiner.json"
+if ! $CLAUDE_ONLY; then
+    echo "==> Installing mas (Mac App Store CLI) so App Store apps are captured too"
+    brew list mas &>/dev/null || brew install mas
 
-add "$HOME/Library/Application Support/Transmit/Connections.transmitstore" "transmit/Connections.transmitstore"
-add "$HOME/Library/Application Support/Transmit/s3Regions.json" "transmit/s3Regions.json"
-add "$HOME/Library/Application Support/Transmit/Metadata" "transmit/Metadata"
+    echo "==> Dumping Brewfile (formulae, casks, taps, mas apps) to $DOTFILES/Brewfile"
+    mkdir -p "$DOTFILES"
+    brew bundle dump --force --file="$DOTFILES/Brewfile"
 
-add "$HOME/Library/Application Support/Tinkerwell/snippets.json" "tinkerwell/snippets.json"
-add "$HOME/Library/Application Support/Tinkerwell/settings.json" "tinkerwell/settings.json"
-add "$HOME/Library/Application Support/Tinkerwell/history.json" "tinkerwell/history.json"
-add "$HOME/Library/Application Support/Tinkerwell/completion.json" "tinkerwell/completion.json"
-add "$HOME/Library/Application Support/Tinkerwell/vuex.json" "tinkerwell/vuex.json"
+    echo "==> Staging local-only app data"
 
-add "$HOME/Library/Application Support/com.tinyapp.TablePlus/Data" "tableplus/Data"
-add "$HOME/Library/Application Support/com.tinyapp.TablePlus/.licensemac" "tableplus/.licensemac"
+    add "$HOME/.config/karabiner/karabiner.json" "karabiner/karabiner.json"
 
-for f in site-groups.json site-statuses.json user-preferences.json profiles-user.json \
-         settings-new-site-defaults.json settings-theme-appearance.json graphql-connection-info.json; do
-    add "$HOME/Library/Application Support/Local/$f" "local-flywheel/$f"
-done
+    add "$HOME/Library/Application Support/Transmit/Connections.transmitstore" "transmit/Connections.transmitstore"
+    add "$HOME/Library/Application Support/Transmit/s3Regions.json" "transmit/s3Regions.json"
+    add "$HOME/Library/Application Support/Transmit/Metadata" "transmit/Metadata"
 
-add "$HOME/Library/Application Support/Herd/config/herd.json" "herd/herd.json"
+    add "$HOME/Library/Application Support/Tinkerwell/snippets.json" "tinkerwell/snippets.json"
+    add "$HOME/Library/Application Support/Tinkerwell/settings.json" "tinkerwell/settings.json"
+    add "$HOME/Library/Application Support/Tinkerwell/history.json" "tinkerwell/history.json"
+    add "$HOME/Library/Application Support/Tinkerwell/completion.json" "tinkerwell/completion.json"
+    add "$HOME/Library/Application Support/Tinkerwell/vuex.json" "tinkerwell/vuex.json"
 
-# Cura: keep profiles/materials/machine instances, skip cache/log
-if [[ -d "$HOME/Library/Application Support/cura" ]]; then
-    for ver_dir in "$HOME/Library/Application Support/cura"/*/; do
-        ver="$(basename "$ver_dir")"
-        [[ "$ver" == ".sentry-native" ]] && continue
-        mkdir -p "$STAGING/cura/$ver"
-        rsync -a --exclude=cache --exclude='*.log' "$ver_dir" "$STAGING/cura/$ver/"
+    add "$HOME/Library/Application Support/com.tinyapp.TablePlus/Data" "tableplus/Data"
+    add "$HOME/Library/Application Support/com.tinyapp.TablePlus/.licensemac" "tableplus/.licensemac"
+
+    for f in site-groups.json site-statuses.json user-preferences.json profiles-user.json \
+             settings-new-site-defaults.json settings-theme-appearance.json graphql-connection-info.json; do
+        add "$HOME/Library/Application Support/Local/$f" "local-flywheel/$f"
     done
-    echo "  + cura/*"
+
+    add "$HOME/Library/Application Support/Herd/config/herd.json" "herd/herd.json"
+
+    # Cura: keep profiles/materials/machine instances, skip cache/log
+    if [[ -d "$HOME/Library/Application Support/cura" ]]; then
+        for ver_dir in "$HOME/Library/Application Support/cura"/*/; do
+            ver="$(basename "$ver_dir")"
+            [[ "$ver" == ".sentry-native" ]] && continue
+            mkdir -p "$STAGING/cura/$ver"
+            rsync -a --exclude=cache --exclude='*.log' "$ver_dir" "$STAGING/cura/$ver/"
+        done
+        echo "  + cura/*"
+    fi
+
+    # Blender: keep prefs, skip cache
+    if [[ -d "$HOME/Library/Application Support/Blender" ]]; then
+        rsync -a --exclude=Cache --exclude=cache "$HOME/Library/Application Support/Blender/" "$STAGING/blender/"
+        echo "  + blender/*"
+    fi
 fi
 
-# Blender: keep prefs, skip cache
-if [[ -d "$HOME/Library/Application Support/Blender" ]]; then
-    rsync -a --exclude=Cache --exclude=cache "$HOME/Library/Application Support/Blender/" "$STAGING/blender/"
-    echo "  + blender/*"
-fi
-
+echo "==> Staging Claude Code memory, settings and hooks"
 # Claude Code: per-project memory, settings and hooks. Transcripts, caches and synced
 # skills are left out - they're large, regenerable, or come back on sign-in.
 add "$HOME/.claude/settings.json" "claude/settings.json"
@@ -87,5 +102,5 @@ rm -rf "$STAGING"
 
 echo
 echo "Done."
-echo "  Brewfile:  $DOTFILES/Brewfile  (commit this to git)"
+$CLAUDE_ONLY || echo "  Brewfile:  $DOTFILES/Brewfile  (commit this to git)"
 echo "  App data:  $ARCHIVE  (transfer via AirDrop / USB / private cloud folder - NOT git)"

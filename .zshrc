@@ -227,3 +227,6 @@ export HERD_PHP_85_INI_SCAN_DIR="/Users/nic/Library/Application Support/Herd/con
 
 # Herd injected PHP 8.3 configuration.
 export HERD_PHP_83_INI_SCAN_DIR="/Users/nic/Library/Application Support/Herd/config/php/83/"
+
+# opencode
+export PATH=/Users/nic/.opencode/bin:$PATH

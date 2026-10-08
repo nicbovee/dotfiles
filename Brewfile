@@ -6,6 +6,8 @@ brew "b2-tools"
 brew "cmake"
 # Dependency manager for Cocoa projects
 brew "cocoapods"
+# Pack, ship and run any application as a lightweight container
+brew "docker"
 # Easiest way to build and release mobile apps
 brew "fastlane"
 # GitHub command-line tool
@@ -24,6 +26,8 @@ brew "mas"
 brew "mole"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
 # AI coding agent, built for the terminal
 brew "opencode"
 # Development kit for the Java programming language
@@ -32,6 +36,8 @@ brew "openjdk"
 brew "openjdk@17"
 # Generic machine emulator and virtualizer
 brew "qemu"
+# Safe, concurrent, practical language
+brew "rust"
 # Terminal multiplexer
 brew "tmux"
 # Manage complex tmux sessions easily
@@ -48,6 +54,8 @@ cask "1password"
 cask "arc"
 # Data backup and storage service
 cask "backblaze"
+# Menu bar icon organiser
+cask "bartender"
 # Open source IDE for exploring and testing APIs
 cask "bruno"
 # OpenAI's official ChatGPT desktop app
@@ -98,6 +106,8 @@ cask "ollama-app"
 cask "obsidian"
 # Bundle with over 30 tools
 cask "parallels-toolbox"
+# Remote desktop
+cask "parsec"
 # Control your tools with a few keystrokes
 cask "raycast"
 # Team communication and collaboration software

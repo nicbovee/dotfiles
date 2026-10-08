@@ -30,7 +30,8 @@ connections, license files, snippets, etc.) via a separate archive that never go
    - Tinkerwell snippets/settings/history
    - TablePlus saved connections + license
    - Local (Flywheel) site config
-   - Herd site/PHP config
+   - Herd settings, PHP versions and `php.ini`s, linked sites, HTTPS sites, custom Nginx
+     configs and a dump of each MariaDB database (see below)
    - Cura print profiles
    - Blender preferences
    - Claude Code per-project memory, `settings.json` and hooks (not transcripts or caches)
@@ -43,15 +44,26 @@ connections, license files, snippets, etc.) via a separate archive that never go
 5. Note any paid-app license keys that live outside app-support folders (check email/purchase
    records) as a fallback.
 
-### Claude Code memory only
+### Just Claude Code or just Herd
 
-To move just Claude Code's per-project memory, `settings.json` and hooks (without touching
-the Brewfile or installing anything):
+Either can be moved on its own, without touching the Brewfile or installing anything else:
 
 ```
-./scripts/migrate-backup.sh --claude-only          # old Mac -> ~/Desktop/claude-migration-<date>.tar.gz
-./scripts/migrate-restore.sh --claude-only <archive>  # new Mac
+./scripts/migrate-backup.sh --claude-only            # old Mac -> ~/Desktop/claude-migration-<date>.tar.gz
+./scripts/migrate-restore.sh --claude-only <archive> # new Mac
+
+./scripts/migrate-backup.sh --herd-only              # old Mac -> ~/Desktop/herd-migration-<date>.tar.gz
+./scripts/migrate-restore.sh --herd-only <archive>   # new Mac
 ```
+
+Claude Code: per-project memory, `settings.json` and hooks.
+
+Herd: on restore, open Herd once first so it can finish setup. The script then puts the
+settings back, installs the same PHP versions, re-links each site (the project must already
+be at the same path), issues fresh HTTPS certificates, and imports each database that
+doesn't exist yet. MariaDB needs to be running for the backup and the import; if it isn't,
+the script says so - start it in Herd and re-run with `--herd-only`. Links to Claude
+worktrees and test-run databases (`*_test_*`) are skipped.
 
 ### On the new Mac
 

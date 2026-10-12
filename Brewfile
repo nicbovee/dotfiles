@@ -2,6 +2,8 @@ tap "laravel/moat", "https://github.com/laravel/moat"
 tap "roots/tap"
 # B2 Cloud Storage Command-Line Tools
 brew "b2-tools"
+# Resource monitor. C++ version and continuation of bashtop and bpytop
+brew "btop"
 # Cross-platform make
 brew "cmake"
 # Dependency manager for Cocoa projects
@@ -100,10 +102,10 @@ cask "notion"
 cask "notion-calendar"
 # Open-source software for live streaming and screen recording
 cask "obs"
-# Get up and running with large language models locally
-cask "ollama-app"
 # Knowledge base that works on top of a local folder of plain text Markdown files
 cask "obsidian"
+# Get up and running with large language models locally
+cask "ollama-app"
 # Bundle with over 30 tools
 cask "parallels-toolbox"
 # Remote desktop
@@ -118,10 +120,10 @@ cask "steam"
 cask "superhuman"
 # Native GUI tool for relational databases
 cask "tableplus"
-# Tinker tool for PHP and Laravel developers
-cask "tinkerwell"
 # Automatic time and productivity tracking app
 cask "timing"
+# Tinker tool for PHP and Laravel developers
+cask "tinkerwell"
 # Git client focusing on power and productivity
 cask "tower"
 # File transfer application
@@ -132,6 +134,8 @@ cask "vlc"
 cask "warp"
 # Multiplayer code editor
 cask "zed"
+# Video communication and virtual meeting platform
+cask "zoom"
 mas "Amphetamine", id: 937984704
 mas "Apple Configurator", id: 1037126344
 mas "Enpass", id: 732710998
@@ -139,11 +143,14 @@ mas "GarageBand", id: 682658836
 mas "GoPro Webcam", id: 6477835262
 mas "iMovie", id: 408981434
 mas "Infuse", id: 1136220934
+mas "Keynote", id: 361285480
 mas "Magnet", id: 441258766
 mas "Microsoft Excel", id: 462058435
-mas "NIIMBOT 2", id: 6755411172
+mas "NIIMBOT", id: 6755411172
+mas "Numbers", id: 361304891
+mas "Pages", id: 361309726
 mas "Pandan", id: 1569600264
-mas "RunCat", id: 1429033973
+mas "RunCatNeo", id: 6757801838
 mas "SiteSucker", id: 442168834
 mas "Things", id: 904280696
 mas "Xcode", id: 497799835
